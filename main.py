@@ -225,4 +225,19 @@ clusters = cluster_faces(profiles, use_kmeans=True, n_clusters=best_k)
 save_profiles(clusters)
 display_profiles(clusters)
 
+
+
+profiles_folder = "profiles"
+
+for folder in os.listdir(profiles_folder):
+    folder_path = os.path.join(profiles_folder, folder)
+
+    if os.path.isdir(folder_path):  
+        image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
+
+        if len(image_files) < 3:
+            print(f"Deleting folder: {folder_path} (contains {len(image_files)} images)")
+            shutil.rmtree(folder_path) 
+
+
 print("Profiles saved successfully in 'profiles/' folder.")
