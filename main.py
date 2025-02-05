@@ -15,6 +15,7 @@ import warnings
 warnings.simplefilter('ignore')
 
 THRESHOLD=.7
+CLEAN_IMAGES=3
 
 
 app = FaceAnalysis(name='buffalo_l', providers=['CPUExecutionProvider']) 
@@ -57,7 +58,7 @@ def extract_faces(image_path):
 
     extracted_faces = []
     for face in faces:
-        if face.det_score > THRESHOLD:  
+        if face.det_score >= THRESHOLD:  
             x1, y1, x2, y2 = map(int, face.bbox)
             face_crop = image[y1:y2, x1:x2]  
             extracted_faces.append((face_crop, face.normed_embedding, image_path))
@@ -74,7 +75,7 @@ def process_gallery(folder_path):
     profiles = []
     
     for filename in os.listdir(folder_path):
-        if filename.endswith(('.jpg', '.png', '.jpeg')):
+        if filename.endswith(('.JPG', '.jpg', '.png', '.jpeg')):
             faces = extract_faces(os.path.join(folder_path, filename))
             for face, encoding, path in faces:
                 profiles.append((filename, face, encoding, path))
@@ -226,7 +227,7 @@ profiles_folder = "profiles"
 for folder in os.listdir(profiles_folder):
     folder_path = os.path.join(profiles_folder, folder)
     l=len(os.listdir(folder_path))
-    if l < 3:
+    if l < CLEAN_IMAGES:
         print(f"Deleting folder: {folder_path} (contains {l} images)")
         shutil.rmtree(folder_path) 
 
