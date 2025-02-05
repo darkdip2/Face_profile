@@ -14,6 +14,13 @@ from insightface.app import FaceAnalysis
 import warnings
 warnings.simplefilter('ignore')
 
+THRESHOLD=.7
+
+
+app = FaceAnalysis(name='buffalo_l', providers=['CPUExecutionProvider']) 
+app.prepare(ctx_id=0)
+
+
 
 os.makedirs("detections", exist_ok=True)
 
@@ -41,12 +48,7 @@ def select_random_images(source_folder='train', destination_folder='gallery', mi
     print(f"Images successfully copied to {destination_folder}!")
 
 
-select_random_images()
-
-THRESHOLD=.5
-
-app = FaceAnalysis(name='buffalo_l', providers=['CPUExecutionProvider']) 
-app.prepare(ctx_id=0)
+#select_random_images()
 
 def extract_faces(image_path):
 
