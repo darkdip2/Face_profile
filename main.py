@@ -208,10 +208,10 @@ print(f'{max_k} Datapoints')
 find_optimal_eps(embeddings, min_samples=5)
 eps_range = np.arange(0.3, 1.0, 0.1)
 min_samples_range = range(3, 10)
-best_eps, best_min_samples = tune_dbscan(embeddings, eps_range, min_samples_range)
-print(f"Using DBSCAN with eps={best_eps}, min_samples={best_min_samples}")
-clusters = cluster_faces(profiles, eps=best_eps, min_samples=best_min_samples, use_kmeans=False)
-save_profiles(clusters, 'DBSCAN')
+#best_eps, best_min_samples = tune_dbscan(embeddings, eps_range, min_samples_range)
+#print(f"Using DBSCAN with eps={best_eps}, min_samples={best_min_samples}")
+#clusters = cluster_faces(profiles, eps=best_eps, min_samples=best_min_samples, use_kmeans=False)
+#save_profiles(clusters, 'DBSCAN')
 
 
 best_k = tune_kmeans(embeddings, k_range=range(2, max_k))
@@ -231,8 +231,7 @@ for folder in os.listdir(profiles_folder):
 
 print("Profiles saved successfully in 'profiles/' folder.")
 
-
-display_profiles(clusters)
+#display_profiles(clusters)
 
 
 
