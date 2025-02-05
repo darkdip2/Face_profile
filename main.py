@@ -12,10 +12,9 @@ import random
 import insightface
 from insightface.app import FaceAnalysis
 import warnings
-
 warnings.simplefilter('ignore')
 
-#model=YOLO('yolov11n-face.onnx')
+
 os.makedirs("detections", exist_ok=True)
 
 
@@ -205,39 +204,35 @@ max_k=len(embeddings)
 
 print(f'{max_k} Datapoints')
 
-find_optimal_eps(embeddings, min_samples=5)
 
+find_optimal_eps(embeddings, min_samples=5)
 eps_range = np.arange(0.3, 1.0, 0.1)
 min_samples_range = range(3, 10)
 best_eps, best_min_samples = tune_dbscan(embeddings, eps_range, min_samples_range)
-
 print(f"Using DBSCAN with eps={best_eps}, min_samples={best_min_samples}")
-
 clusters = cluster_faces(profiles, eps=best_eps, min_samples=best_min_samples, use_kmeans=False)
+save_profiles(clusters, 'DBSCAN')
+
 
 best_k = tune_kmeans(embeddings, k_range=range(2, max_k))
-
 print(f"Using KMeans with n_clusters = {best_k}")
-
 clusters = cluster_faces(profiles, use_kmeans=True, n_clusters=best_k)
-
-
 save_profiles(clusters)
-display_profiles(clusters)
-
-
 
 profiles_folder = "profiles"
 
 for folder in os.listdir(profiles_folder):
     folder_path = os.path.join(profiles_folder, folder)
-
-    if os.path.isdir(folder_path):  
-        image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
-
-        if len(image_files) < 3:
-            print(f"Deleting folder: {folder_path} (contains {len(image_files)} images)")
-            shutil.rmtree(folder_path) 
+    l=len(os.listdir(folder_path))
+    if l < 3:
+        print(f"Deleting folder: {folder_path} (contains {l} images)")
+        shutil.rmtree(folder_path) 
 
 
 print("Profiles saved successfully in 'profiles/' folder.")
+
+
+display_profiles(clusters)
+
+
+
