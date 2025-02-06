@@ -184,7 +184,8 @@ def save_profiles(clusters, output_folder="profiles"):
 
         for filename, face, _, path in cluster:
             save_path = os.path.join(profile_folder, filename)
-            cv2.imwrite(save_path, face)
+            image_=cv2.imread(path)
+            cv2.imwrite(save_path, image_)
 
         rep_filename, rep_face, _, _ = find_representative_image(cluster)
         rep_image_path = os.path.join(profile_folder, "representative.jpg")
